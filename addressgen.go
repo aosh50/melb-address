@@ -85,6 +85,7 @@ func main() {
 		w.Write(js)
 		// w.Write([]byte(add.StrName))
 	})
+	fmt.Println("Starting server...")
 	http.ListenAndServe(":443", r)
 }
 
