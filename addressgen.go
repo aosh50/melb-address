@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -87,20 +88,24 @@ func main() {
 		// w.Write([]byte(add.StrName))
 	})
 	fmt.Println("Starting server...")
-	http.ListenAndServe(":443", r)
+	http.ListenAndServe(":3100", r)
 }
 
 func loadAddresses() []string {
-	jsonFile, err := os.Open("data/melbCouncil.json")
-	// if we os.Open returns an error then handle it
+	url := "https://raw.githubusercontent.com/aosh50/melb-address/master/data/melbCouncil.json"
+
+	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer jsonFile.Close()
-	byt, _ := ioutil.ReadAll(jsonFile)
+	defer resp.Body.Close()
 
 	var addresses []MelbCouncilAddress
-	if err := json.Unmarshal(byt, &addresses); err != nil {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+	respByte := buf.Bytes()
+	if err := json.Unmarshal(respByte, &addresses); err != nil {
+		// if err := json.Unmarshal(byt, &addresses); err != nil {
 		panic(err)
 	}
 	var streetaddresses []string
