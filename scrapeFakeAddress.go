@@ -6,7 +6,7 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func main() {
+func scrape() {
 	c := colly.NewCollector()
 
 	// Find and visit all links
