@@ -98,6 +98,7 @@ func loadAddresses() []string {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println("got file")
 	defer resp.Body.Close()
 
 	var addresses []MelbCouncilAddress
@@ -108,6 +109,8 @@ func loadAddresses() []string {
 		// if err := json.Unmarshal(byt, &addresses); err != nil {
 		panic(err)
 	}
+	fmt.Println("unmarshalled")
+
 	var streetaddresses []string
 	for _, client := range addresses {
 		streetaddresses = append(streetaddresses, fmt.Sprintf("%s, %s %s, Victoria", client.AddressPnt, client.Suburb, "3000"))
